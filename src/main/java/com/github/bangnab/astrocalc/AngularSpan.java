@@ -37,4 +37,8 @@ public class AngularSpan {
     public double toDegrees() {
         return degrees + (minutes + seconds / Angles.SECONDS_PER_MINUTE) / Angles.MINUTES_PER_DEGREE;
     }
+
+    public AngularSpan plus(AngularSpan other) {
+        return AngularSpan.fromDegrees(this.toDegrees() + other.toDegrees());
+    }
 }
