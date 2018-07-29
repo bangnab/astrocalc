@@ -57,4 +57,15 @@ class AngularSpanTest {
         assertThat(angle.getSeconds(), closeTo(24.2400, 0.0001));
     }
 
+    @Test
+    void toDegrees() {
+        AngularSpan angle = new AngularSpan(1, 2, 3.45);
+        assertThat(angle.toDegrees(), closeTo(1.0343, 0.0001));
+    }
+
+    @Test
+    void toDegreesFromKnownValue() {
+        AngularSpan angle = new AngularSpan(15, 7, 24.24);
+        assertThat(angle.toDegrees(), closeTo(15.1234, 0.0001));
+    }
 }

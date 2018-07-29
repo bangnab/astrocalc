@@ -27,10 +27,14 @@ public class AngularSpan {
         double degreesMod = (degrees % Angles.DEGREES_MODULO + Angles.DEGREES_MODULO) % Angles.DEGREES_MODULO;
         int degreesIntegral = (int) degreesMod;
         double degreesDecimal = degreesMod - degreesIntegral;
-        double minutes = degreesDecimal * Angles.MINUTES_PER_HOUR;
+        double minutes = degreesDecimal * Angles.MINUTES_PER_DEGREE;
         int minutesIntegral = (int) minutes;
         double minutesDecimal = minutes - minutesIntegral;
         double seconds = minutesDecimal * Angles.SECONDS_PER_MINUTE;
         return new AngularSpan(degreesIntegral, minutesIntegral, seconds);
+    }
+
+    public double toDegrees() {
+        return degrees + (minutes + seconds / Angles.SECONDS_PER_MINUTE) / Angles.MINUTES_PER_DEGREE;
     }
 }
