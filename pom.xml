@@ -49,14 +49,6 @@
                     </formats>
                     <check/>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>cobertura</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
