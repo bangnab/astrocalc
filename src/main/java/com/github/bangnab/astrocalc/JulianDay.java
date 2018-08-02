@@ -5,13 +5,10 @@ import java.time.ZonedDateTime;
 
 public class JulianDay {
 
-    private static final int YEAR = 0;
-    private static final int MONTH = 1;
-    private static final int DAY = 2;
-    private static final int HOURS = 3;
-    private static final int MINUTES = 4;
-    private static final int SECONDS = 5;
-    private static final int MILLIS = 6;
+    public static final ZonedDateTime BEGINNING_OF_GREGORIAN_CALENDAR = ZonedDateTime.parse("1582-10-15T00:00:00Z");
+
+    private JulianDay() {
+    }
 
     /**
      * Converts a ZonedDateTime to a
@@ -26,7 +23,6 @@ public class JulianDay {
         int seconds = time.getSecond();
         int millis = time.getNano() / 1_000_000;
 
-
         double decimalDay = day + (hours / 24.0) +
                 (minutes / 1440.0) +
                 (seconds / 86400.0) +
@@ -37,16 +33,16 @@ public class JulianDay {
             month = month + 12;
         }
 
-        double A = 0;
-        double B = 0;
-        if (time.isAfter(ZonedDateTime.parse("1582-10-15T00:00:00Z"))) {
-            A = Math.floor(year / 100);
-            B = 2 - A + Math.floor(A / 4);
+        double a;
+        double b = 0;
+        if (time.isAfter(BEGINNING_OF_GREGORIAN_CALENDAR)) {
+            a = 1.0 * year / 100;
+            b = 2 - a + Math.floor(a / 4);
         }
 
         return (Math.floor(365.25 * (year + 4716.0)) +
                 Math.floor(30.6001 * (month + 1)) +
-                decimalDay + B - 1524.5);
+                decimalDay + b - 1524.5);
     }
 
     /**
@@ -56,23 +52,20 @@ public class JulianDay {
      * @return ZonedDateTIme
      */
     public static ZonedDateTime toTimestamp(double jd) {
-
-        int a, b, c, d, e;
-
         int z = (int) Math.floor(jd);
-        double f = jd - z;
 
+        int a;
         if (z >= 2299161) {
             int alpha = (int) Math.floor((z - 1867216.25) / 36524.25);
-            a = z + 1 + alpha - (int) Math.floor(alpha / 4);
+            a = z + 1 + alpha - alpha / 4;
         } else {
             a = z;
         }
 
-        b = a + 1524;
-        c = (int) Math.floor((b - 122.1) / 365.25);
-        d = (int) Math.floor(365.25 * c);
-        e = (int) Math.floor((b - d) / 30.6001);
+        int b = a + 1524;
+        int c = (int) Math.floor((b - 122.1) / 365.25);
+        int d = (int) Math.floor(365.25 * c);
+        int e = (int) Math.floor((b - d) / 30.6001);
 
         int day = b - d - (int) Math.floor(30.6001 * e);
         int month = (e < 14)
@@ -82,6 +75,7 @@ public class JulianDay {
                 ? (c - 4716)
                 : (c - 4715);
 
+        double f = jd - z;
         f = f * 24.0;
         int hour = (int) Math.floor(f);
         f = (f - hour) * 60.0;

@@ -24,7 +24,7 @@ public class AngularSpan {
     }
 
     public static AngularSpan fromDegrees(double degrees) {
-        double degreesMod = (degrees % Angles.DEGREES_MODULO + Angles.DEGREES_MODULO) % Angles.DEGREES_MODULO;
+        double degreesMod = MathUtils.positiveMod(degrees, Angles.DEGREES_MODULO);
         int degreesIntegral = (int) degreesMod;
         double degreesDecimal = degreesMod - degreesIntegral;
         double minutes = degreesDecimal * Angles.MINUTES_PER_DEGREE;
